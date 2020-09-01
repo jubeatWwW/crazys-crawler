@@ -16,8 +16,8 @@ for line in f.readlines():
     proxies.append(line.split(':')[0])
 
 try:
-    for page in range(1, 150):
-        driver.get('http://free-proxy.cz/en/proxylist/main/%s' % page)
+    for page in range(1, 6):
+        driver.get('http://free-proxy.cz/en/proxylist/country/all/https/ping/all/%s' % page)
         rows = WebDriverWait(driver, 9000).until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, '#proxy_list tbody tr'))
         )
