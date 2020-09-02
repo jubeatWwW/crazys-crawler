@@ -4,33 +4,30 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-def get_ssl_proxies():
+# no valid
+def get_free_proxy_lists():
     driver = webdriver.Chrome(
         executable_path='/c/WebDrivers/bin/chromedriver.exe',
     )
 
-    driver.get('https://www.sslproxies.org/')
+    driver.get('http://www.freeproxylists.net/zh/?pr=HTTPS')
     proxies = []
-    while True:
-        next_btn_wrapper = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.ID, 'proxylisttable_next'))
-        )
-        next_btn = next_btn_wrapper.find_element_by_tag_name('a')
+    pages = driver.find_elements_by_css_selector('.page a')
+    for i in range(pages):
+        driver.get('http://www.freeproxylists.net/zh/?pr=HTTPS&page=%d' % i)
         rows = WebDriverWait(driver, 10).until(
-            EC.presence_of_all_elements_located((By.CSS_SELECTOR, '#proxylisttable tbody tr'))
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.DataGrid tbody tr'))
         )
         for row in rows:
+            if row.get_attribute('class') == 'Caption':
+                continue
             cols = row.find_elements_by_tag_name('td')
+            if len(cols) < 2:
+                continue
             host = cols[0].text
             port = cols[1].text
             proxies.append('%s:%s' % (host, port))
-
-        class_name = next_btn_wrapper.get_attribute('class')
-        if 'disabled' in class_name:
-            break
-        next_btn.click()
-    driver.quit()
     return proxies
 
 if __name__ == "__main__":
-    print(get_ssl_proxies())
+    print(get_free_proxy_lists())

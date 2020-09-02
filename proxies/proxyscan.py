@@ -9,4 +9,4 @@ def get_proxy_scan():
         return proxies
 
 if __name__ == "__main__":
-    get_proxy_scan()
+    print(get_proxy_scan())

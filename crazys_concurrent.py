@@ -22,7 +22,8 @@ class Processing(threading.Thread):
         if not self.size:
             return
         while self.queue.qsize() > 0:
-            print('%.2f' % (1 - (self.queue.qsize() / self.size)))
+            process = (1 - (self.queue.qsize() / self.size)) * 100
+            print('%.2f%%' % process)
             time.sleep(5)
             
 
