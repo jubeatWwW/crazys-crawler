@@ -1,3 +1,4 @@
+import argparse
 import threading
 from proxies import (
     get_proxy_scan,
@@ -26,15 +27,17 @@ class GetProxy(threading.Thread):
     def run(self):
         data = filter(lambda x: x.split(':')[0] not in used, self.query_func())
         self.proxies += data
+        print('get %d proxies' % len(self.proxies))
 
-def get_proxy_list():
+def get_proxy_list(headless=False):
     getters = [
         get_proxy_scan,
         get_ssl_proxies,
         get_proxy_cz,
         get_spys_one,
-        get_hide_my_name,
     ]
+    if not headless:
+        getters.append(get_hide_my_name)
     proxies = []
     threads = []
     for getter in getters:
@@ -51,4 +54,10 @@ def get_proxy_list():
     f.close()
 
 if __name__ == "__main__":
-    get_proxy_list()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '-q',
+        '--headless',
+    )
+    args = parser.parse_args()
+    get_proxy_list(bool(args.headless))

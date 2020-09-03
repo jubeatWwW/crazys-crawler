@@ -1,14 +1,12 @@
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from .driver import get_driver
+
 def get_proxy_cz():
+    driver = get_driver()
     proxies = []
-    driver = webdriver.Chrome(
-        executable_path='/c/WebDrivers/bin/chromedriver.exe',
-    )
     try:
         for page in range(1, 6):
             driver.get('http://free-proxy.cz/en/proxylist/country/all/https/ping/all/%s' % page)

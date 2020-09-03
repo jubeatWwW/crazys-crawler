@@ -1,15 +1,12 @@
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from .driver import get_driver
+
 # no valid
 def get_spys_one():
-    driver = webdriver.Chrome(
-        executable_path='/c/WebDrivers/bin/chromedriver.exe',
-    )
-
+    driver = get_driver()
     driver.get('https://spys.one/en/https-ssl-proxy/')
     proxies = []
     odd_rows = WebDriverWait(driver, 10).until(
